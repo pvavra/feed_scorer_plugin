@@ -1,6 +1,6 @@
 <?php
 
-class ModifyScore_Filter extends Plugin {
+class Feed_Scorer_Plugin extends Plugin {
 
 	/** @var PluginHost $host */
 	private $host;
@@ -27,7 +27,7 @@ class ModifyScore_Filter extends Plugin {
 		
 		$score_title = self::extract_score_from_title($feed_title);
 
-		Debug::log("final article score based on feed-title: " . $score);
+		Debug::log("final article score based on feed-title: " . $score_title);
 		$article["score_modifier"] = $score_title;
 
 		return $article;
@@ -44,7 +44,7 @@ class ModifyScore_Filter extends Plugin {
 		<div dojoType='dijit.layout.AccordionPane'
 			title="<i class='material-icons'>extension</i> <?= __('ModifyScore based on Feed Title settings') ?>">
 
-			<?= format_notice("Set global multiplier for feed title based artcile score.") ?>
+			<?= format_notice("Set global multiplier for feed title based score.") ?>
 
 			<form dojoType='dijit.form.Form'>
 
@@ -70,7 +70,7 @@ class ModifyScore_Filter extends Plugin {
 				<fieldset>
 					<label class='checkbox'>
 						<?= \Controls\checkbox_tag("update_feeds_scores", $update_feeds_scores) ?>
-						<?= __("Update all Scores of all feeds (this may take a while)") ?>
+						<?= __("Recalculate scores of all articles (this may take a while)") ?>
 					</label>
 				</fieldset>
 
@@ -159,7 +159,7 @@ class ModifyScore_Filter extends Plugin {
 						Debug::log("old score was: " . $old_score);
 
 
-						// reapply all filters which (also) modify the score
+						// reapply all filters which modify the score
 						$filter_actions = RSSUtils::eval_article_filters($matched_filters, $title, $content, $link, $author, $tags);
 						$score_article = RSSUtils::calculate_article_score($filter_actions);
 						
